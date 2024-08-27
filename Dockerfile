@@ -6,6 +6,6 @@ COPY . /app
 
 RUN pip install -r requirements.txt
 
-EXPOSE 8000/tcp
+EXPOSE 88/tcp
 
 CMD ["python", "bot.py"]
