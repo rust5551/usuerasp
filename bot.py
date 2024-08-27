@@ -9,7 +9,7 @@ port = 8000
 s = socket.socket()
 s.bind(("", port))
 s.listen(1)
-
+s.accept()
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
 # startDate = "01.09.2024"
