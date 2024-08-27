@@ -3,6 +3,12 @@ import os
 from telegram import Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTypes, CommandHandler
 from datetime import datetime, timedelta
+import socket
+
+port = 8000
+s = socket.socket()
+s.bind(("", port))
+s.listen(1)
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
