@@ -3,18 +3,9 @@ import os
 from telegram import Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTypes, CommandHandler
 from datetime import datetime, timedelta
-from flask import Flask
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
 
-
-app = Flask(__name__)
-
-@app.route('/')
-def hello():
-    return 'Hello, World!'
-
-app.run(port=8000)
 # startDate = "01.09.2024"
 # endDate = "08.09.2024"
 def getrasp(startDate, endDate):
