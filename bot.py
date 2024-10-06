@@ -55,6 +55,7 @@ async def rasp(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"```Расписание \n{getrasp(startDate, endDate)}```", parse_mode="MarkdownV2")
 
 async def get_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger(update)
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Используйте /rasp 02.09.2024 n, где n это число дней на которое необходимо расписание \n\nЛибо просто /rasp отправляет расписание на неделю вперёд")
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
