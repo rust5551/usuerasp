@@ -60,6 +60,7 @@ async def get_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger(update)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Помощь – /help")
 
 
 if __name__ == '__main__':
