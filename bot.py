@@ -20,6 +20,8 @@ def getrasp(startDate, endDate):
         for pair in day["pairs"]:
             if pair['schedulePairs']:
                 out += f"\n\n{pair['time']} {pair['N']} пара: {pair['schedulePairs'][0]['subject']} {pair['schedulePairs'][0]['aud']}"
+                if {pair['schedulePairs'][0]['group']} != "ИВТ-24-1":
+                    out += f" {pair['schedulePairs'][0]['group'][9:]}"
             else:
                 out += f"\n\n{pair['time']} {pair['N']} пара: "
         out += '\n'
@@ -52,6 +54,9 @@ async def rasp(update: Update, context: ContextTypes.DEFAULT_TYPE):
     #print(startDate, endDate)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"```Расписание \n{getrasp(startDate, endDate)}```", parse_mode="MarkdownV2")
 
+async def get_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Используйте /rasp 02.09.2024 n, где n это число дней на которое необходимо расписание \n\nЛибо просто /rasp отправляет расписание на неделю вперёд")
+
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger(update)
 
@@ -61,8 +66,10 @@ if __name__ == '__main__':
 
     echo_handler = MessageHandler(filters.TEXT and (~filters.COMMAND), echo)
     rasp_handler = CommandHandler('rasp', rasp)
+    help_handler = CommandHandler('help', get_help)
 
     application.add_handler(echo_handler)
     application.add_handler(rasp_handler)
+    application.add_handler(help_handler)
 
     application.run_polling()
