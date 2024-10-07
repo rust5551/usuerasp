@@ -17,15 +17,17 @@ def getrasp(startDate, endDate):
     for day in rjson:
         out = f"{day['weekDay']} {day['date']}"
         day["pairs"] = day["pairs"][:8]
+
         for pair in day["pairs"]:
             if pair['schedulePairs']:
-                out += f"\n\n{pair['time']} {pair['N']} пара: {pair['schedulePairs'][0]['subject']} {pair['schedulePairs'][0]['aud']}"
-                if pair['schedulePairs'][0]['group'] != "ИВТ-24-1":
-                    out += f" {pair['schedulePairs'][0]['group'][9:]}"
+                out += f"\n\n{pair['schedulePairs'][0]['comm'][:-5]} {pair['N']} пара:"
             else:
-                out += f"\n\n{pair['time']} {pair['N']} пара: "
+                out += f"\n\n{pair['time']} {pair['N']} пара:"
+            for sched in pair["schedulePairs"]:
+                out += f"\n{sched['subject']} {sched['aud']} {sched['group'][9:]}"
         out += '\n'
         output.append(out)
+
     megaout = ""
     for i in output:
         megaout += i
@@ -54,6 +56,20 @@ async def rasp(update: Update, context: ContextTypes.DEFAULT_TYPE):
     #print(startDate, endDate)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"```Расписание \n{getrasp(startDate, endDate)}```", parse_mode="MarkdownV2")
 
+async def rasptd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger(update)
+    startDate = datetime.today()
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"```Расписание \n{getrasp(startDate, startDate)}```", parse_mode="MarkdownV2")
+
+async def rasptm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger(update)
+    startDate = datetime.today() + timedelta(days=1)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"```Расписание \n{getrasp(startDate, startDate)}```", parse_mode="MarkdownV2")
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger(update)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Помощь – /help")
+
 async def get_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger(update)
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Используйте /rasp 02.09.2024 n, где n это число дней на которое необходимо расписание \n\nЛибо просто /rasp отправляет расписание на неделю вперёд")
@@ -68,10 +84,17 @@ if __name__ == '__main__':
 
     echo_handler = MessageHandler(filters.TEXT and (~filters.COMMAND), echo)
     rasp_handler = CommandHandler('rasp', rasp)
+    rasptd_handler = CommandHandler('rasptd', rasptd)
+    rasptm_handler = CommandHandler('rasptm', rasptm)
     help_handler = CommandHandler('help', get_help)
+    start_handler = CommandHandler('start', start)
 
     application.add_handler(echo_handler)
     application.add_handler(rasp_handler)
+    application.add_handler(rasptd_handler)
+    application.add_handler(rasptm_handler)
     application.add_handler(help_handler)
+    application.add_handler(start_handler)
+
 
     application.run_polling()
