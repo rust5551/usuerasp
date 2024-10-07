@@ -20,7 +20,7 @@ def getrasp(startDate, endDate):
         for pair in day["pairs"]:
             if pair['schedulePairs']:
                 out += f"\n\n{pair['time']} {pair['N']} пара: {pair['schedulePairs'][0]['subject']} {pair['schedulePairs'][0]['aud']}"
-                if {pair['schedulePairs'][0]['group']} != "ИВТ-24-1":
+                if pair['schedulePairs'][0]['group'] != "ИВТ-24-1":
                     out += f" {pair['schedulePairs'][0]['group'][9:]}"
             else:
                 out += f"\n\n{pair['time']} {pair['N']} пара: "
