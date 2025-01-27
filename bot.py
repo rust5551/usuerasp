@@ -11,7 +11,7 @@ def logger(update):
         f.write(f"[{update.effective_user.first_name} | @{update.effective_user.username} | {update.message.date.astimezone()}]   {update.message.text} \n ——————————————— \n")
 
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logger(update)
+    
     texts = {
         'На неделю': rasp,
         'На сегодня': rasptd,
@@ -20,6 +20,7 @@ async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         await texts[update.effective_message.text](update, context)
     except:
+        logger(update)
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Введите /start")
     #await context.bot.send_message(chat_id=update.effective_chat.id, text=update.effective_message.text)
 
